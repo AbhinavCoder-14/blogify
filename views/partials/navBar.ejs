@@ -1,0 +1,432 @@
+<!-- partials/navbar.ejs -->
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<nav class="navbar">
+  <div class="nav-container">
+    <!-- Logo/Brand -->
+    <div class="nav-brand">
+      <a href="/" class="brand-link">
+        <h2>MyBlog</h2>
+      </a>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="nav-links" id="navLinks">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="/" class="nav-link <%= currentPage === 'home' ? 'active' : '' %>">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="/posts" class="nav-link <%= currentPage === 'posts' ? 'active' : '' %>">All Posts</a>
+        </li>
+        <li class="nav-item">
+          <a href="/categories" class="nav-link <%= currentPage === 'categories' ? 'active' : '' %>">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a href="/about" class="nav-link <%= currentPage === 'about' ? 'active' : '' %>">About</a>
+        </li>
+        <li class="nav-item">
+          <a href="/contact" class="nav-link <%= currentPage === 'contact' ? 'active' : '' %>">Contact</a>
+        </li>
+        
+        <!-- Authentication Links -->
+        <% if (typeof user !== 'undefined' && user) { %>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="userDropdown">
+              <%= user.name || user.username %>
+            </a>
+            <div class="dropdown-menu" id="dropdownMenu">
+              <a href="/dashboard" class="dropdown-item">Dashboard</a>
+              <a href="/profile" class="dropdown-item">Profile</a>
+              <% if (user.role === 'admin') { %>
+                <a href="/admin" class="dropdown-item">Admin Panel</a>
+              <% } %>
+              <div class="dropdown-divider"></div>
+              <a href="/logout" class="dropdown-item">Logout</a>
+            </div>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a href="/login" class="nav-link">Login</a>
+          </li>
+          <li class="nav-item">
+            <a href="/user/signup" class="nav-link btn-signup">Sign Up</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <div class="nav-toggle" id="navToggle">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* Base Font Setup */
+* {
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* GitHub-inspired Professional Color Variables */
+:root {
+  --primary-color: #24292f;      /* GitHub dark */
+  --secondary-color: #32383f;    /* Slightly lighter */
+  --accent-color: #238636;       /* GitHub green */
+  --accent-hover: #1a7f37;       /* Darker green */
+  --text-primary: #1f2328;       /* Dark text */
+  --text-secondary: #656d76;     /* Muted text */
+  --text-muted: #8c959f;         /* Light muted */
+  --surface: #ffffff;            /* White surface */
+  --surface-hover: #f6f8fa;      /* GitHub light gray hover */
+  --border-light: #d1d9e0;       /* Light border */
+  --border-medium: #8c959f;      /* Medium border */
+  --success: #238636;            /* GitHub green */
+  --warning: #fb8500;            /* Orange */
+  --error: #da3633;              /* GitHub red */
+  --shadow-sm: 0 1px 2px 0 rgba(31, 35, 40, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(31, 35, 40, 0.08), 0 2px 4px -1px rgba(31, 35, 40, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(31, 35, 40, 0.1), 0 4px 6px -2px rgba(31, 35, 40, 0.05);
+}
+
+/* Navbar Styles */
+.navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.nav-container {
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.nav-brand {
+  flex-shrink: 0;
+}
+
+.brand-link {
+  text-decoration: none;
+  color: #333;
+}
+
+.brand-link h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  background: #cafcb7;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: block;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}
+
+.nav-link.active {
+  color: var(--accent-color);
+  background-color: #dcfce7;
+  font-weight: 600;
+}
+
+.btn-signup {
+  background: var(--accent-color);
+  color: white !important;
+  border: none;
+  padding: 10px 16px !important;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-signup:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Dropdown Styles */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-light);
+  background: var(--surface);
+  padding: 8px 12px !important;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dropdown-toggle:hover {
+  color: var(--text-primary) !important;
+  border-color: var(--border-medium);
+  background: var(--surface-hover);
+}
+
+.dropdown-toggle::after {
+  content: "▼";
+  margin-left: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--surface);
+  min-width: 180px;
+  box-shadow: var(--shadow-lg);
+  border-radius: 8px;
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-light);
+  margin-top: 4px;
+}
+
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin: 2px 0;
+}
+
+.dropdown-item:hover {
+  background-color: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-light);
+  margin: 8px 0;
+}
+
+/* Mobile Menu Toggle */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-toggle:hover {
+  background-color: var(--surface-hover);
+}
+
+.bar {
+  width: 20px;
+  height: 2px;
+  background-color: var(--text-secondary);
+  margin: 2px 0;
+  transition: 0.3s;
+  border-radius: 1px;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 71px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 71px);
+    background: var(--surface);
+    transition: 0.3s;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .nav-links.active {
+    left: 0;
+  }
+
+  .nav-menu {
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    gap: 0;
+  }
+
+  .nav-item {
+    width: 100%;
+    margin: 4px 0;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 6px;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: 1px solid var(--border-light);
+    background: var(--surface-hover);
+    margin-top: 8px;
+    border-radius: 6px;
+  }
+
+  /* Mobile menu animation */
+  .nav-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle.active .bar:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  .nav-toggle.active .bar:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #f0f6ff;
+    --secondary-color: #c9d1d9;
+    --text-primary: #f0f6ff;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --surface: #0d1117;
+    --surface-hover: #21262d;
+    --border-light: #30363d;
+    --border-medium: #484f58;
+    --accent-color: #3fb950;
+  }
+
+  .navbar {
+    background: var(--surface);
+    border-bottom-color: var(--border-light);
+  }
+
+  .nav-link.active {
+    background-color: #1a2e1a;
+    color: #3fb950;
+  }
+
+  .dropdown-toggle {
+    background: var(--surface);
+    border-color: var(--border-light);
+  }
+
+  .dropdown-menu {
+    background: var(--surface-hover);
+    border-color: var(--border-light);
+  }
+}
+</style>
+
+<script>
+// Mobile menu toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+      navToggle.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    const navLinkElements = navLinks.querySelectorAll('.nav-link');
+    navLinkElements.forEach(link => {
+      link.addEventListener('click', function() {
+        navLinks.classList.remove('active');
+        navToggle.classList.remove('active');
+      });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!navToggle.contains(event.target) && !navLinks.contains(event.target)) {
+        navLinks.classList.remove('active');
+        navToggle.classList.remove('active');
+      }
+    });
+  }
+});
+</script>
