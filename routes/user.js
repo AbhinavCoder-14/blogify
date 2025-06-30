@@ -1,6 +1,7 @@
 import express from "express"
 import { User } from "../models/user.js"; 
 import mongoose from "mongoose"
+import { createTokenForUser, validateTokenForUser } from "../services/auth.js";
 
 
 
@@ -28,8 +29,19 @@ userRoute.get("/signup",(req,res)=>{
 userRoute.post("/signin",async (req,res)=>{
     const { email, password } = req.body;
     const user = await User.matchPassword(email,password)
+    if(!user) return res.render("signin.ejs",{
+        error:"User or Password incorrect",
+        title:"xyz",
+        currentPage:"signup",
+        user :req.user
 
-    console.log(user)
+    })
+
+    const token = createTokenForUser(user)
+
+
+    console.log(token)
+    res.cookie("token",token) 
     return res.redirect("/")
 
 })
@@ -48,3 +60,9 @@ userRoute.post("/signup", async (req, res) => {
     return res.status(500).send("Signup failed: " + err.message);
   }
 });
+
+
+userRoute.get("/logout",(req,res)=>{
+    res.clearCookie("token").redirect("/")
+    
+})

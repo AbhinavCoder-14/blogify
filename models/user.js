@@ -51,14 +51,16 @@ userSchema.pre("save", function(next){
 
 userSchema.static("matchPassword", async function(email,password){
     const user = await this.findOne({email})
-    if(!user) throw new Error("User not found!");
+    // if(!user) throw new Error("User not found!");
+    if(!user) return false;
+
 
     const salt = user.salt
     const hashedPassword = user.password;
     const userProviderHash = createHmac("sha256",salt).update(password).digest('hex')
 
     if (hashedPassword!== userProviderHash){
-        throw new Error("Incorrect Password")
+        return false
     }
 
     return user
