@@ -7,7 +7,11 @@ import mongoose from "mongoose"
 export const userRoute = express.Router();
 
 userRoute.get("/signin",(req,res)=>{
-    return res.render("signin")
+    return res.render("signin",{
+        title:"xyz",
+        currentPage:"signup",
+        user :req.user
+    })
 })
 
 
@@ -19,6 +23,16 @@ userRoute.get("/signup",(req,res)=>{
     })
 })
 
+
+
+userRoute.post("/signin",async (req,res)=>{
+    const { email, password } = req.body;
+    const user = await User.matchPassword(email,password)
+
+    console.log(user)
+    return res.redirect("/")
+
+})
 
 
 userRoute.post("/signup", async (req, res) => {
