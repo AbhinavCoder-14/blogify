@@ -6,7 +6,8 @@ import mongoose from "mongoose";
 import {userRoute} from "./routes/user.js"
 import {connectDB} from "./db/connect.js"
 import cookieParser from "cookie-parser";
-import { checkForAuthCookie } from "./middlewares/auth.js";
+import { checkForAuthCookie,restrictTo } from "./middlewares/auth.js";
+
 
 const app = express();
 const PORT = 8000
@@ -31,7 +32,7 @@ app.use(cookieParser())
 
 app.use(checkForAuthCookie("token"))
 
-app.get("/",(req,res)=>{
+app.get("/",restrictTo(['USER','ADMIN']),(req,res)=>{
     res.render("home.ejs",{
         currentPage:'home',
         user: req.user

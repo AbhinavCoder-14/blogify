@@ -10,7 +10,7 @@ export function createTokenForUser(user){
         _id:user._id,
         email:user.email,
         profileImageURL:user.profileImageURL,
-        role:user.url
+        role:user.role
 
     },secret)
 

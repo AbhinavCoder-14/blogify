@@ -14,5 +14,18 @@ export function checkForAuthCookie(cookieName){
             
         return next()
     }
+}
+
+
+export function restrictTo(roles=[]){
+    return function(req,res,next){
+        if(!req.user) return res.redirect("/user/signin")
+        
+        if(!roles.includes(req.user.role)) {
+            return res.end("unautherized")
+        }
+    
+        return next()
     }
+}
    
