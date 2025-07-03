@@ -34,7 +34,7 @@ blogRoute.post("/",upload.single("backgroundImage"),async (req,res)=>{
     const newBlog = await Blog.create({
         title,content,
         createdBy:req.user._id,
-        backgroundImage:`uploads/${req.file.filename}`,
+        backgroundImage:`/uploads/${req.file.filename}`,
     })
     console.log(req.body)
     return res.redirect(`/blogs/${newBlog._id}`)
@@ -53,7 +53,10 @@ blogRoute.get("/:id",async(req,res)=>{
     res.render("showBlog.ejs",{
         title:getBlog.title,
         content:getBlog.content,
+        backgroundImage:getBlog.backgroundImage,
+        currentPage: "show blogs",
+         user: req.user
     })
-    res.end("blog found on db")
+
     
 })
