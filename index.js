@@ -7,6 +7,7 @@ import {userRoute} from "./routes/user.js"
 import {connectDB} from "./db/connect.js"
 import cookieParser from "cookie-parser";
 import { checkForAuthCookie,restrictTo } from "./middlewares/auth.js";
+import { blogRoute } from "./routes/add-blog.js";
 
 
 const app = express();
@@ -25,8 +26,8 @@ connectDB("mongodb://127.0.0.1:27017/blogify")
 app.set("view engine","ejs")
 app.set("views", path.resolve("./views"))
 
+app.use(express.urlencoded({extended:true}))
 app.use(express.json());
-app.use(express.urlencoded({extended:false}))
 app.use(cookieParser())
 
 
@@ -41,7 +42,7 @@ app.get("/",restrictTo(['USER','ADMIN']),(req,res)=>{
 
 
 app.use("/user",userRoute)
-
+app.use("/blogs",blogRoute)
 
 
 app.listen(PORT,()=>{
