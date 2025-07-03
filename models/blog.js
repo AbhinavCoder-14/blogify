@@ -1,18 +1,18 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 
 
 const blogSchema = new mongoose.Schema({
-    tittle :{
+    title :{
         type:String,
         required:true
     },
 
-    body :{
+    content :{
         type:String,
         required:true
     },
-    coverImg :{
+    backgroundImage :{
         type:String,
     },
     createdBy :{
