@@ -21,6 +21,9 @@
             color: #333;
             overflow-x: hidden;
         }
+        .container{
+            width: 100%;
+        }
 
         .error-container {
             text-align: center;
@@ -219,6 +222,10 @@
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
+        .cont-mini{
+                display: flex;
+                justify-content: center;
+        }
 
         .search-btn {
             position: absolute;
@@ -279,6 +286,9 @@
     </style>
 </head>
 <body>
+    <div class="container">
+ <%- include('partials/navBar.ejs', { currentPage: currentPage, user: user }) %>
+    <div class="cont-mini">
     <div class="floating-shapes">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -308,6 +318,12 @@
             </a>
         </div>
     </div>
+
+    </div>
+
+
+    </div>
+       
 
     <script>
         function searchBlog() {

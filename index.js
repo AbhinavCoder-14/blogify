@@ -50,12 +50,16 @@ app.get("/",restrictTo(['USER','ADMIN']),async (req,res)=>{
 
 
 app.get("/categories",(req,res)=>{
-    res.render("4O4.ejs")
+    res.render("4O4.ejs",{        currentPage:'home',
+        user: req.user})
 })
 
 
 app.get("/about",(req,res)=>{
-    res.render("4O4.ejs")
+    res.render("4O4.ejs",{
+                currentPage:'home',
+        user: req.user
+    })
 })
 
 
