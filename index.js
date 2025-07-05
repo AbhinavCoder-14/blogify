@@ -9,6 +9,10 @@ import cookieParser from "cookie-parser";
 import { checkForAuthCookie,restrictTo } from "./middlewares/auth.js";
 import { blogRoute } from "./routes/add-blog.js";
 
+import { Blog } from "./models/blog.js";
+import { allowedNodeEnvironmentFlags } from "process";
+import { create } from "domain";
+
 
 const app = express();
 const PORT = 8000
@@ -34,12 +38,26 @@ app.use(express.static(path.resolve("./public")))
 
 app.use(checkForAuthCookie("token"))
 
-app.get("/",restrictTo(['USER','ADMIN']),(req,res)=>{
+app.get("/",restrictTo(['USER','ADMIN']),async (req,res)=>{
+    const allBlogs = await Blog.find({}).sort({createdAt:-1}) // decrement -1   
+    console.log(allBlogs)
     res.render("home.ejs",{
         currentPage:'home',
-        user: req.user
+        user: req.user,
+        allBlogs:allBlogs
     })
 })
+
+
+app.get("/categories",(req,res)=>{
+    res.render("4O4.ejs")
+})
+
+
+app.get("/about",(req,res)=>{
+    res.render("4O4.ejs")
+})
+
 
 
 app.use("/user",userRoute)

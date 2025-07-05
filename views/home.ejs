@@ -6,10 +6,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Blog</title>
 </head>
+<style>
+    body{
+        background: linear-gradient(45deg,#1a1a2e, #16213e);
+
+    }
+
+    .showBlogs{
+        gap: 60px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+
+
+
+    .blog-card {
+    height: 300px;
+    min-width: 400px;
+    margin: 10px 0px;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .blog-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background: linear-gradient(transparent, rgba(255, 0, 0, 0.9));
+    padding: 2rem 1.5rem 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    }
+
+    .blog-card-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.4;
+    }
+
+    .blog-card-title a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    }
+
+    .blog-card-title a:hover {
+    color: #fbbf24;
+    }
+
+    /* Make entire card clickable */
+    .blog-card {
+    display: block;
+    }
+
+    .blog-card-overlay {
+    pointer-events: none;
+    }
+
+    .blog-card-title a {
+    pointer-events: all;
+    }
+
+
+    /* Alternative: Make entire card clickable */
+    .blog-card[data-link] {
+    cursor: pointer;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+    .blog-card {
+        height: 250px;
+    }
+    
+    .blog-card-title {
+        font-size: 1.25rem;
+    }
+    
+    .blog-card-overlay {
+        padding: 1.5rem 1rem 1rem;
+    }
+    }
+
+    /* Grid layout for multiple cards */
+    .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+    }
+
+</style>
 <body>
     <%- include('partials/navBar.ejs', { currentPage: currentPage, user: user }) %>
     
-    <main>
+    <main class="showBlogs">
+
+        <!-- Simple Blog Card with Background Image -->
+
+
+        <% allBlogs.forEach(blog => { %>
+        <div class="blog-card" style="background-image: url('<%= blog.backgroundImage %>');"
+             
+            <div class="blog-card-overlay">
+                <h3 class="blog-card-title">
+                    <a href="/blogs/<%= blog._id %>">
+                        <%= blog.title %>
+                    </a>
+                </h3>   
+            </div>
+            <% }) %>
+        </div>  
+
+
+
+
         
     </main>
     
