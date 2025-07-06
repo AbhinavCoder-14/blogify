@@ -1,3 +1,4 @@
+import 'dotenv/config'; 
 import path from "path"
 import express from "express"
 import mongoose from "mongoose";
@@ -15,9 +16,9 @@ import { create } from "domain";
 
 
 const app = express();
-const PORT = 8000
+const PORT = process.env.PORT || 8000
 
-connectDB("mongodb://127.0.0.1:27017/blogify")
+connectDB(process.env.MONGO_URL) //mongodb://127.0.0.1:27017/blogify for local machine
 .then(()=>{
     console.log('MongoDB connected')
 })
